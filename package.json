@@ -1,0 +1,29 @@
+{
+  "name": "iconfont-extract",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelce/iconfont-extract.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abelce/iconfont-extract/issues"
+  },
+  "homepage": "https://github.com/abelce/iconfont-extract#readme",
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "tslib": "^2.5.0"
+  },
+  "dependencies": {
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
+  },
+  "type": "module"
+}
