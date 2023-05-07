@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "target": "es5",
@@ -13,7 +14,14 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "skipLibCheck": true,
+    "types": [
+      "node"
+    ],
+    "outDir": "dist"
   },
+  "include": [
+    "scripts/**/*"
+, "IconCreator"  ],
   "exclude": [
     "node_modules",
     "lib",

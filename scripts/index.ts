@@ -7,9 +7,9 @@ import {
   mkdirRecursive,
   genSvgComponent,
   normalizeConfig,
+  removeDir,
 } from "./utils";
 import path = require("path");
-import { argv } from "process";
 import { CONFIG_FILE } from "./constants";
 const prettier = require("prettier");
 
@@ -43,8 +43,6 @@ const processSvgNameToArr = (name = ""): string[] => {
     .map((item) => item.toLowerCase());
 };
 
-const converNameToHump = () => {};
-
 const createSVGFromSymbol = (prefix: string, str: string): Array<string[]> => {
   const symbolList = str.match(svgReg);
   if (symbolList) {
@@ -76,9 +74,11 @@ const createSVGFromSymbol = (prefix: string, str: string): Array<string[]> => {
 const saveSvgList = async (dir: string, svgList: Array<string[]>) => {
   for (let data of svgList) {
     const svgName = data[0];
-    const svgFileName = `${dir}/svgs/${svgName}`;
+    const svgFileName = `${dir}/svgs`;
+    mkdirRecursive(svgFileName);
+
     await createAndSaveFile(
-      path.join(svgFileName, `/${svgName}.tsx`),
+      path.join(svgFileName, `${svgName}.tsx`),
       prettier.format(
         `
       import React from 'react';
@@ -95,7 +95,7 @@ const genSvgComponents = async (dir: string, svgList: Array<string[]>) => {
   const indexFileContent = [];
   for (let data of svgList) {
     const svgComponentName = data[0];
-    const currentIconPath = path.join(`${dir}/components`, svgComponentName);
+    const currentIconPath = path.join(`${dir}/icons`, svgComponentName);
     mkdirRecursive(currentIconPath);
 
     await createAndSaveFile(
@@ -103,12 +103,12 @@ const genSvgComponents = async (dir: string, svgList: Array<string[]>) => {
       prettier.format(genSvgComponent(data[0], data[1]), { parser: "babel-ts" })
     );
     indexFileContent.push(
-      `export { default as ${data[0]} } from "./components/${data[1]}";`
+      `export { default as ${data[0]} } from "./icons/${svgComponentName}";`
     );
   }
-  indexFileContent.push(
-    `export { default as IconCreator } from "./components/icon-creator";`
-  );
+  // indexFileContent.push(
+  //   `export { default as IconCreator } from "./icons/icon-creator";`
+  // );
   indexFileContent.push('export * from "./types";');
   // create index.ts
   const indexFilePath = path.join(dir, "index.ts");
@@ -117,11 +117,18 @@ const genSvgComponents = async (dir: string, svgList: Array<string[]>) => {
 
 const iconfontEXtract = async (options: Options) => {
   const config = Object.assign({}, defaultConfig, options);
+  const outDir = path.join(process.cwd(), config.outDir || "icons");
+  
+  removeDir(outDir);
+  mkdirRecursive(outDir);
+
 
   // load data
   const iconfontStr = await loadIconfontStr(config.url);
   const svgInfo = createSVGFromSymbol(config.prefix || "", iconfontStr);
-  const outDir = path.join(__dirname, config.outDir || __dirname);
+
+
+
   if (svgInfo.length) {
     await saveSvgList(outDir, svgInfo);
     await genSvgComponents(outDir, svgInfo);
@@ -129,12 +136,9 @@ const iconfontEXtract = async (options: Options) => {
 };
 
 const run = () => {
-  const configPath = path.join(__dirname, CONFIG_FILE);
+  const configPath = path.join(process.cwd(), CONFIG_FILE);
   const configModule = require(configPath);
   const config = normalizeConfig(configModule.default || configModule);
-  if (!Object.keys(config).length) {
-    
-  }
 
   if (!config.url) {
     throw new Error("iconfontEXtract: url is required");
@@ -143,4 +147,5 @@ const run = () => {
   iconfontEXtract(config);
 };
 
+// module.exports = run;
 run();

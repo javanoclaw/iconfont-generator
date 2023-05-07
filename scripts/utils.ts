@@ -29,6 +29,22 @@ export function mkdirRecursive(dirname: string) {
   fs.mkdirSync(dirname, { recursive: true });
 }
 
+export function removeDir(path: string) {
+  let files = [];
+  if (fs.existsSync(path)) {
+    files = fs.readdirSync(path);
+    files.forEach(function (file, index) {
+      const curPath = path + "/" + file;
+      if (fs.statSync(curPath).isDirectory()) {
+      } else {
+        // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+  }
+}
+
+
 
 // 生成React组件
 export const genSvgComponent = (name: string, svgStr: string) => {
