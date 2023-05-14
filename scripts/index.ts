@@ -8,6 +8,7 @@ import {
   genSvgComponent,
   normalizeConfig,
   removeDir,
+  copyTypes,
 } from "./utils";
 import path = require("path");
 import { CONFIG_FILE } from "./constants";
@@ -95,7 +96,7 @@ const genSvgComponents = async (dir: string, svgList: Array<string[]>) => {
   const indexFileContent = [];
   for (let data of svgList) {
     const svgComponentName = data[0];
-    const currentIconPath = path.join(`${dir}/icons`, svgComponentName);
+    const currentIconPath = path.join(`${dir}/components`, svgComponentName);
     mkdirRecursive(currentIconPath);
 
     await createAndSaveFile(
@@ -103,11 +104,11 @@ const genSvgComponents = async (dir: string, svgList: Array<string[]>) => {
       prettier.format(genSvgComponent(data[0], data[1]), { parser: "babel-ts" })
     );
     indexFileContent.push(
-      `export { default as ${data[0]} } from "./icons/${svgComponentName}";`
+      `export { default as ${data[0]} } from "./components/${svgComponentName}";`
     );
   }
   // indexFileContent.push(
-  //   `export { default as IconCreator } from "./icons/icon-creator";`
+  //   `export { default as IconCreator } from "./components/icon-creator";`
   // );
   indexFileContent.push('export * from "./types";');
   // create index.ts
@@ -132,6 +133,7 @@ const iconfontEXtract = async (options: Options) => {
   if (svgInfo.length) {
     await saveSvgList(outDir, svgInfo);
     await genSvgComponents(outDir, svgInfo);
+    copyTypes(outDir)
   }
 };
 
@@ -147,5 +149,4 @@ const run = () => {
   iconfontEXtract(config);
 };
 
-// module.exports = run;
 run();

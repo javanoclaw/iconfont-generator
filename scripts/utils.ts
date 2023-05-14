@@ -1,6 +1,8 @@
 import fs from "fs";
 import { Options } from "./types";
 import { defaultConfig } from "./config";
+import path from "path";
+const prettier = require("prettier");
 
 export const createAndSaveFile = (fileName: string, content: string) => {
   return new Promise<void>((resolve, reject) => {
@@ -44,18 +46,16 @@ export function removeDir(path: string) {
   }
 }
 
-
-
 // 生成React组件
 export const genSvgComponent = (name: string, svgStr: string) => {
   return `
         import React from 'react';
         import Icon from '@ant-design/icons';
         
-        import { WoodIconProps } from '../../types';
+        import { IconProps } from '../../types';
         import ${name}Svg from "../../svgs/${name}";
 
-        const ${name} = (props: WoodIconProps): JSX.Element => {
+        const ${name} = (props: IconProps): JSX.Element => {
           return <Icon component={${name}Svg} {...props} />;
         }
 
@@ -63,11 +63,30 @@ export const genSvgComponent = (name: string, svgStr: string) => {
     `;
 };
 
-
-export const normalizeConfig = (config:(defaultConfig: Options) => Options | Options) => {
+export const normalizeConfig = (
+  config: (defaultConfig: Options) => Options | Options
+) => {
   if (typeof config === "function") {
     return config(defaultConfig);
-  }  
+  }
 
   return config;
-}
+};
+
+export const copyTypes = async (dir: string): Promise<void> => {
+  const tyeps = `
+  import { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
+
+  export type IconProps = Omit<CustomIconComponentProps, "width" | "height" | "fill"> & {
+    width?: string | number;
+    height?: string | number;
+    fill?: string;
+    onClick?: () => void; // 添加点击事件
+  };
+  `
+
+  await createAndSaveFile(
+    path.join(dir, `/types.ts`),
+    prettier.format(tyeps, { parser: "babel-ts" })
+  );
+};

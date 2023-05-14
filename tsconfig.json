@@ -21,7 +21,7 @@
   },
   "include": [
     "scripts/**/*"
-, "IconCreator"  ],
+  ],
   "exclude": [
     "node_modules",
     "lib",

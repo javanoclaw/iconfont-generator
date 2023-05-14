@@ -4,4 +4,5 @@ export const defaultConfig: Options = {
   url: "",
   iconClassName: "icon",
   prefix: "icon",
+  outDir: "icons",
 };

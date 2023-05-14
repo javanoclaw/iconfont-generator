@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --build",
     "clean": "tsc --build --clean",
+    "build": "npm run clean && tsc --build",
     "prerelease": "npm version prerelease --preid=alpha"
   },
   "repository": {
@@ -23,15 +23,22 @@
     "url": "https://github.com/abelce/iconfont-extract/issues"
   },
   "homepage": "https://github.com/abelce/iconfont-extract#readme",
+  "peerDependencies": {
+    "@ant-design/icons": ">=4.7.0",
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
+  },
   "devDependencies": {
+    "@ant-design/icons": "^5.0.1",
     "@types/node": "^18.16.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tslib": "^2.5.0"
+    "tslib": "^2.5.0",
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   },
   "dependencies": {
     "prettier": "^2.8.8",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "tslib": "^2.5.0"
   },
   "type": "commonjs",
   "files": [

@@ -130,3 +130,5 @@ dist
 .pnp.*
 
 build/
+/icons
+iconfont-extract-config.js
