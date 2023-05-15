@@ -2,11 +2,12 @@
 
 ## usage 
 
+Install with npm:
 ```shell
 npm install --save-dev iconfont-extract
 ```
 
-create iconfont-extract-config.js
+add **iconfont-extract-config.js**
 
 ```js
 module.exports = {
@@ -28,3 +29,8 @@ execute command
 ```shell
 npm run icons
 ```
+
+## options 
++ **url**: icontfont js address of the generated icon library.
++ **outDir**: output dir.
++ **prefix**: The prefix of the generated components.
