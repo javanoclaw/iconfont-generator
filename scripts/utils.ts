@@ -51,7 +51,7 @@ export const genSvgComponent = (name: string, svgStr: string) => {
   return `
         import React from 'react';
         import Icon from '@ant-design/icons';
-        import { ReactComponent as ${name}Svg } from "../../svgs/${name}.svg";
+        import { ReactComponent as ${name}Svg } from "../svgs/${name}.svg";
         import { IconProps } from '../types';
 
         const ${name} = (props: IconProps): JSX.Element => {
