@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "bin": {
-    "iconfont-extract": "./bin/index.js"
+    "iconfont-generator-for-react": "./bin/index.js"
   },
   "scripts": {
     "test": "node test/index.js",
