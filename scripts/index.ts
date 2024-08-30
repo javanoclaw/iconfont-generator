@@ -84,7 +84,7 @@ const saveSvgList = async (
 
     await createAndSaveFile(
       path.join(svgFileName, `${svgName}.svg`),
-      prettier.format(data[1], { parser: "svg" })
+      data[1],
     );
   }
 };
