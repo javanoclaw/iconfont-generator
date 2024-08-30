@@ -47,11 +47,11 @@ export function removeDir(path: string) {
 }
 
 // 生成React组件
-export const genSvgComponent = (name: string, svgStr: string) => {
+export const genSvgComponent = (name: string, svgAlias?: string) => {
   return `
         import React from 'react';
         import Icon from '@ant-design/icons';
-        import { ReactComponent as ${name}Svg } from "../svgs/${name}.svg";
+        import { ReactComponent as ${name}Svg } from "${svgAlias?svgAlias:'../svgs/'}${name}.svg";
         import { IconProps } from '../types';
 
         const ${name} = (props: IconProps): JSX.Element => {

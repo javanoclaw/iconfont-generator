@@ -72,10 +72,14 @@ const createSVGFromSymbol = (prefix: string, str: string): Array<string[]> => {
   return [];
 };
 
-const saveSvgList = async (dir: string, svgList: Array<string[]>) => {
+const saveSvgList = async (
+  dir: string,
+  svgList: Array<string[]>,
+  config: Options
+) => {
   for (let data of svgList) {
     const svgName = data[0];
-    const svgFileName = `${dir}/svgs`;
+    const svgFileName = config.svgDir ? config.svgDir : `${dir}/svgs`;
     mkdirRecursive(svgFileName);
 
     await createAndSaveFile(
@@ -85,7 +89,11 @@ const saveSvgList = async (dir: string, svgList: Array<string[]>) => {
   }
 };
 
-const genSvgComponents = async (dir: string, svgList: Array<string[]>) => {
+const genSvgComponents = async (
+  dir: string,
+  svgList: Array<string[]>,
+  config: Options
+) => {
   const indexFileContent = [];
   for (let data of svgList) {
     const svgComponentName = data[0];
@@ -95,7 +103,11 @@ const genSvgComponents = async (dir: string, svgList: Array<string[]>) => {
     mkdirRecursive(currentIconPath);
     await createAndSaveFile(
       path.join(currentIconPath, `/index.tsx`),
-      prettier.format(genSvgComponent(data[0], data[1]), { parser: "babel-ts" })
+      prettier.format(
+        genSvgComponent(data[0], config.svgAlias),
+        { parser: "babel-ts" },
+        config.svgAlias
+      )
     );
     indexFileContent.push(
       `export { default as ${data[0]} } from "./${svgComponentName}";`
@@ -122,8 +134,8 @@ const iconfontEXtract = async (options: Options) => {
   const svgInfo = createSVGFromSymbol(config.prefix || "", iconfontStr);
 
   if (svgInfo.length) {
-    await saveSvgList(outDir, svgInfo);
-    await genSvgComponents(outDir, svgInfo);
+    await saveSvgList(outDir, svgInfo, config);
+    await genSvgComponents(outDir, svgInfo, config);
     copyTypes(outDir);
   }
 };
