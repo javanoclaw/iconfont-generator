@@ -1,1 +1,1 @@
-export const CONFIG_FILE = "iconfont-extract-config.js";
+export const CONFIG_FILE = "iconfont-config.js";

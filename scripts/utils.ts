@@ -51,9 +51,8 @@ export const genSvgComponent = (name: string, svgStr: string) => {
   return `
         import React from 'react';
         import Icon from '@ant-design/icons';
-        
-        import { IconProps } from '../../types';
-        import ${name}Svg from "../../svgs/${name}";
+        import { ReactComponent as ${name}Svg } from "../../svgs/${name}.svg";
+        import { IconProps } from '../types';
 
         const ${name} = (props: IconProps): JSX.Element => {
           return <Icon component={${name}Svg} {...props} />;
@@ -83,10 +82,16 @@ export const copyTypes = async (dir: string): Promise<void> => {
     fill?: string;
     onClick?: () => void; // 添加点击事件
   };
-  `
+  `;
+  const globalTypes = `declare module '*.svg';`;
 
   await createAndSaveFile(
     path.join(dir, `/types.ts`),
     prettier.format(tyeps, { parser: "babel-ts" })
+  );
+
+  await createAndSaveFile(
+    path.join(dir, `/typings.d.ts`),
+    prettier.format(globalTypes, { parser: "babel-ts" })
   );
 };

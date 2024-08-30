@@ -1,16 +1,15 @@
 {
-  "name": "iconfont-extract",
-  "version": "0.0.2-alpha.0",
+  "name": "iconfont-generator",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "bin": {
     "iconfont-extract": "./bin/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node test/index.js",
     "clean": "tsc --build --clean",
-    "build": "npm run clean && tsc --build",
-    "prerelease": "npm version prerelease --preid=alpha"
+    "build": "npm run clean && tsc --build"
   },
   "repository": {
     "type": "git",
@@ -31,6 +30,7 @@
   "devDependencies": {
     "@ant-design/icons": "^5.0.1",
     "@types/node": "^18.16.3",
+    "@types/react": ">=16.9.0",
     "tslib": "^2.5.0",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0"

@@ -1,2 +1,1 @@
-const IconfontExtract = require("../dist/index");
-IconfontExtract();
+require("../dist/index");
